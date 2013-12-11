@@ -37,17 +37,12 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Docker</h1>
-					<h3>I built a SaaS and I shipped it</h3>
-					<h4>in a single afternoon</h4>
-					<p><i>and RackSpace hosted it for free*</i></p>
+					<h2>I built a SaaS and I shipped it</h2>
+					<h3>in an afternoon</h3>
+					<h4>and so could you!</h4>
 					<p>
 						<small>Created by <a href="http://tech.paulcz.net">Paul Czarkowski</a> / <a href="http://twitter.com/pczarkowski">@pczarkowski</a></small>
 					</p>
-				</section>
-
-				<section>
-					<h2>About Me</h2>
 				</section>
 
 				<section>
@@ -56,54 +51,14 @@
 				</section>
 
 				<section>
-					<h2>SysAdmin...</h2>
+					<h2>Not a DevOp</h2>
+ 					<p>what even is?</p>
  					<p><img src="images/sysadmin.jpg"><br>
 				</section>
 
 				<section>
-					<h2>Corporate slave...</h2>
-					<span class="fragment">
-					<p>But not your typical corporation ...
- 					<p><img src="images/bf4.jpg"><br>
- 					</span>
-				</section>
-
-
-				<section>
-					<h2>Chef hacker...</h2>
- 					<p><img src="images/Chef_Logo.png" width="25%"><br>
- 					<a href="https://github.com/paulczar/cookbook-openstack-docker">https://github.com/paulczar/cookbook-openstack-docker</a>
-				</section>
-
-				<section>
-					<h2>Also the other kind of Chef...</h2>
- 					<p><img src="images/popup.jpg" width="50%">
-				</section>
-
-				<section>
-					<h2>Best Queso in Austin - 2013</h2>
- 					<p><img src="images/queso.jpg" width="50%">
-				</section>
-
-				<section>
-					<h2>And A Docker Hacker...</h2>
- 					<p><img src="images/docker-repo.png" width="75%">
-				</section>
-
-				<section>
-					<h2>What is docker anyway?</h2>
- 					<p>Urbandictionary.com describes docking as ...
- 					<blockquote class="fragment">a verb describing the act of stretching one mans...</blockquote>
-				</section>
-
-				<section>
-					<h2>What is docker anyway?</h2>
- 					<p><img src="images/docker.png">
-				</section>
-
-				<section>
 					<h2>The Problem</h2>
- 					<h3>I want a persistent IRC connection</h3>
+ 					<h3>I want an IRC</h3>
  					<ul>
  						<li>That is connected even when I'm not.
  						<li>That I can connect from any of my machines.
@@ -112,11 +67,27 @@
 				</section>
 
 				<section>
+				  <h2>to the googles!</h2>
+					<div class="fragment">
+					<p align="left">There's a web app for that - <a href="http://ircrelay.com">http://ircrelay.com</a>
+					<p><q>But I don't want to pay $5 a month because I'm cheap.</q><br><br><br>
+				  </div>
+				  <div class="fragment">
 					<p align="left">There's an OSS App for that - <a href="http://wiki.znc.in/ZNC">http://wiki.znc.in/ZNC</a>
-					<p><q>But I don't want to have to run a server.</q>
-					<p align="left">There's a SaaS for that - <a href="http://ircrelay.com">http://ircrelay.com</a>
-					<p><q>But I don't want to pay $5 a month because I'm cheap.</q><br><br>
-				  <h3 class="fragment">I bet I could build a SaaS IRC Bouncer using docker...</h3>
+					<p><q>But I would need to host it somewhere.</q>
+					</div>
+				</section>
+
+				<section>
+				  <h2>Shaving the Yak</h2>
+				  <p>I could do that myself!
+					<p align="left" class="fragment">in a docker container <span class="fragment">in the cloud.</span>
+					<p align="left" class="fragment">behind a web app so my friends can use it too.
+					<p align="left" class="fragment">with a database to track who can access it.
+					<p align="left" class="fragment">Some chef cookbooks to manage the server and deploy the app.
+					<p align="left" class="fragment">...
+					<p align="left" class="fragment">...
+					<p align="left" class="fragment">...
 				</section>
 
 				<section>
@@ -124,8 +95,8 @@
 					<p><a href="https://github.com/paulczar/docker-znc">https://github.com/paulczar/docker-znc</a>
 				</section>
 
-				<section>	
-				  <h3>Dockerfile</h3>				
+				<section>
+				  <h3>Dockerfile</h3>
 					<pre class="stretch"><code>
 # This file creates a container that runs ZNC
 #
@@ -152,11 +123,11 @@ EXPOSE 6667
 
 # Start znc
 CMD ["start-znc"]
-					</code></pre>					
+					</code></pre>
 				</section>
 
-				<section>		
-				  <h3>start-znc</h3>			
+				<section>
+				  <h3>start-znc</h3>
 					<pre class="stretch"><code>
 #!/bin/bash
 
@@ -175,41 +146,42 @@ sed -i "s/IRC_SERVER/$IRC_SERVER/" /opt/znc/configs/znc.conf
 sed -i "s/IRC_PORT/$IRC_PORT/" /opt/znc/configs/znc.conf
 
 znc -f -r -d /opt/znc
-					</code></pre>					
+					</code></pre>
 				</section>
 
-				<section>		
-				  <h3>Run it!</h3>			
+				<section>
+				  <h3>Run it!</h3>
 					<pre><code>
 $ docker run -e ZNC_USER=paultest -e ZNC_PASS=paultest \
       -p 6667 -u znc paulczar/znc start-znc
 Connecting to IRC Server: irc.freenode.net:6667
 ZNC User: paultest
 ZNC Pass: paultest
-Opening Config [/opt/znc/configs/znc.conf]... 
+Opening Config [/opt/znc/configs/znc.conf]...
 Loading Global Module [lastseen]... [/usr/lib/znc/lastseen.so]
-Binding to port [+6667] using ipv4... 
+Binding to port [+6667] using ipv4...
 Loading user [paultest]
-Adding Server [irc.freenode.net 6667]... 
-					</code></pre>					
+Adding Server [irc.freenode.net 6667]...
+					</code></pre>
 				</section>
 
 				<section>
 				<h2>That was easy ... now write a web app</h2>
 				<p>I'm going to be ultra cool and use Node and Mongo!
-				<ul>
+				<ol>
 				 <li class="fragment">Install Node.JS
 				 <li class="fragment">Install MongoDB
-				 <li class="fragment">Find an Auth library to auth against google.
+				 <li class="fragment">Start writing code
 				 <li class="fragment">...
 				 <li class="fragment">...
 				 <li class="fragment">I just remembered ...  I'm a shit programmer.
+				</ol>
 				</section>
 
 				<section>
 				<h2>Back to the drawing board...</h2>
-				<p class="fragment">Hey look this guy has done something similar for memcached...
-				<br><img src="images/memcached.png">
+				<p>I vaguely remember seeing some guy did a 'try memcache' website using docker.
+				<br><img src="images/memcached.png" class="fragment">
 				</section>
 
 				<section>
@@ -229,46 +201,24 @@ Adding Server [irc.freenode.net 6667]...
 						<li>Ruby on Rails
 						<li>Active Record
 						<li>Calls docker CLI with backtick commands.
-						<li class="fragment">I can understand it enough to hack at it.
-						<li class="fragment">A real dev could write it from scratch in an hour or so.
 					</ul>
 				</section>
 
 				<section>
-					<h2>Add Vagrant + Berkshelf / Chef</h2>
+					<h2>But it doesn't quite work...</h2>
+					<ul>
+						<li>learn how the site works while bugfixing.
+						<li>If you fix a bug in forked code ... send a PR!
+						<li>https://github.com/jbarbier/SaaS_Memcached/pull/2
+					</ul>
+				</section>
+
+				<section>
+					<h2>Build a dev environment</h2>
 					<pre class="stretch"><code>
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
 require "vagrant"
-
-if Vagrant::VERSION < "1.2.1"
-  raise "Use a newer version of Vagrant (1.2.1+)"
-end
-
-
-# Allows us to pick a different box by setting Environment Variables
-BOX_NAME = ENV['BOX_NAME'] || "precise64"
-BOX_URI = ENV['BOX_URI'] || "https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_provisionerless.box"
-
 Vagrant.configure("2") do |config|
-  # Cachier - speeds up subsequent runs.
-  # vagrant plugin install vagrant-cachier
-  config.cache.auto_detect = true
-  #config.cache.enable_nfs  = true
-  config.berkshelf.enabled = true
-  # Ensure Chef 11.x is installed for provisioning
-  config.omnibus.chef_version = :latest
-
   config.vm.define :SaasZNC do |config|
-    config.vm.hostname = "SaasZNC"
-    config.vm.box = BOX_NAME
-    config.vm.box_url = BOX_URI
-    config.vm.network :private_network, ip: "33.33.33.33"
-    config.vm.network :forwarded_port, guest: 3000, host: 3000
-    config.ssh.max_tries = 40
-    config.ssh.timeout   = 120
-    config.ssh.forward_agent = true
     config.vm.provision :chef_solo do |chef|
       chef.provisioning_path = "/tmp/vagrant-cache"
       chef.json = {
@@ -286,7 +236,6 @@ Vagrant.configure("2") do |config|
         "recipe[docker::default]"
       ]
     end
-
     config.vm.provision :shell, :inline => <<-SCRIPT
       groupadd docker
       usermod -a -G docker vagrant
@@ -298,25 +247,23 @@ Vagrant.configure("2") do |config|
       rails server -d
 
     SCRIPT
-    config.vm.provider :virtualbox do |vb|
-      vb.customize ["modifyvm", :id, "--cpus", 2]
-      vb.customize ["modifyvm", :id, "--memory", 2048]
-    end
   end
 end
 
 					</pre class="stretch"></code>
+					<p>Vagrant+Chef = Dev Env as Code.
+					<p class="fragment">Vagrant is amazing.  Use it.
 				</section>
 
 				<section>
-					<h2>Over the course of the next hour...</h2>
-					<ul>
-						<li class="fragment">Working prototype in Vagrant
-						<li class="fragment">Create Rackspace public cloud instance <br><i>(&lt;3 dev free cloud promo)</i>
-						<li class="fragment">Config server using Chef Enterprise <i>(5 servers free)</i>
-						<li class="fragment">Upload code with scp
-						<li class="fragment">rails server -d -e production
-						<li class="fragment">http://znc.paulcz.net
+					<h2>Over the course of the next few hours...</h2>
+					<ul class="fragment">
+						<li>Working prototype in Vagrant
+						<li>Create Rackspace public cloud instance <br><i>(free with dev promo)</i>
+						<li>add server to Chef Enterprise <i>(5 servers free)</i>
+						<li>Write and upload chef cookbook to install ircaas app
+						<li>bootstrap cloud instance from cookbook
+						<li>http://znc.paulcz.net
 				</section>
 
 				<section>
@@ -330,7 +277,7 @@ end
 				<section>
 				  <h2>Stress Test</h2>
 				  <pre><code>
-for i in {1..100}; do 
+for i in {1..100}; do
 	docker run -e ZNC_USER=znctest$i -e ZNC_PASS=znctest$i -d -p 6667 -u znc paulczar/znc start-znc
 done
 				  </code></pre>
@@ -344,32 +291,38 @@ done
 				</section>
 
 				<section>
-					<h2>Live Demo!</h2>
-					<img src="images/livedemo.jpg"><br>
-					<a href="http://znc.paulcz.net">http://znc.paulcz.net</a>
+					<h2>you did a thing ... so what ?</h2>
+					<ul class="fragment">
+					 <li>increasing ecosystem of tools
+					 <li>&Delta;t for idea -> product decreasing
+					 <li>reduce cost of failure
+					 <li>Get your (new or existing) product into users hands quicker!
+					 <ul>
+					 	<li>trychef.com
+					 	<li>tryconfluence.com
+					 	<li>try[insert-your-product-here].com
+					 </ul>
+					</ul>
 				</section>
 
 
 				<section>
 					<h2>Links</h2>
+					<p><a href="http://znc.paulcz.net">http://znc.paulcz.net</a></p><br>
 					<ul>
+						<li><a href="https://github.com/paulczar/IRCaaS">IRCaaS source code</a></li>
+						<li><a href="https://github.com/paulczar/chef-ircaas">Chef repo to deploy ^</a></li>
 						<li><a href="http://docker.io">Docker</a></li>
-						<li><a href="http://www.memcachedasaservice.com/">Example Memcached SaaS using docker</a></li>
-						<li><a href="http://znc.paulcz.net">my ZNC SaaS</a></li>
 						<li><a href="http://www.vagrantup.com/">Vagrant</a></li>
+						<li><a href="http://www.opscode.com/chef/">Chef</a></li>
 						<li><a href="http://developer.rackspace.com/devtrial/">Rackspace &lt;3 Developers Free Trial</a></li>
-						<li><a href="https://www.facebook.com/events/231601060322589/">East Austin Oaxaca Popup</a>
+						<li><a href="http://www.memcachedasaservice.com/">Example Memcached SaaS using docker</a></li>
 					</ul>
 				</section>
 
 				<section>
 					<h1>THE END</h1>
 					<h3>BY Paul Czarkowski  / @pczarkowski </h3>
-				</section>
-
-				<section>
-					<h2>ps Come eat my food</h2>
- 					<p><img src="images/popup.jpg" width="50%">
 				</section>
 
 			</div>
